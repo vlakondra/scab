@@ -7,11 +7,16 @@
   import Fa from "svelte-fa";
   import { faArrowCircleUp } from "@fortawesome/free-solid-svg-icons";
 
+  //https://github.com/svelte-add/bulma
   // alert(window.ttt);
   let a = 5;
   console.log(Cookies.get());
-  let b = Cookies.get("api_token"); //   "SL_G_WPT_TO");
+  let b = Cookies.get("SL_G_WPT_TO"); //   "SL_G_WPT_TO");
   console.log("api ", b);
+
+  Cookies.set("mycookie", a.toString(), { expires: 7, path: "" });
+  let c = Cookies.get("mycookie");
+  console.log("c", c);
 </script>
 
 <main>
@@ -55,6 +60,7 @@
     place-items: center;
     min-width: 320px;
     min-height: 100vh;
+    border: 3px solid blue;
   }
 
   .logo {
