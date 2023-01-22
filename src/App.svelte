@@ -1,13 +1,22 @@
 <script>
   import svelteLogo from "./assets/svelte.svg";
   import Counter from "./lib/Counter.svelte";
+
+  //https://github.com/js-cookie/js-cookie
+  import Cookies from "js-cookie";
+
   // alert(window.ttt);
   let a = 5;
+  console.log(Cookies.get());
+  let b = Cookies.get("SL_G_WPT_TO");
 </script>
 
 <main>
   <div>
     {a}
+    <p>
+      {b}
+    </p>
     <a href="https://vitejs.dev" target="_blank" rel="noreferrer">
       <img src="/vite.svg" class="logo" alt="Vite Logo" />
     </a>
