@@ -1,12 +1,15 @@
 <script>
   import svelteLogo from "./assets/svelte.svg";
   import Counter from "./lib/Counter.svelte";
+  alert(window.ttt);
+  let a = 5;
 </script>
 
 <main>
   <div>
+    {a}
     <a href="https://vitejs.dev" target="_blank" rel="noreferrer">
-      <img src="/vite.svg" class="logo" alt="Vite Logo" />
+      <img src="/vite.svg" class="logo" alt="Vite Logo!!" />
     </a>
     <a href="https://svelte.dev" target="_blank" rel="noreferrer">
       <img src={svelteLogo} class="logo svelte" alt="Svelte Logo" />
@@ -18,7 +21,7 @@
     <Counter />
   </div>
 
-  <p>
+  <p on:click={() => (a += 5)}>
     Check out <a
       href="https://github.com/sveltejs/kit#readme"
       target="_blank"
