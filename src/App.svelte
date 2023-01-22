@@ -25,7 +25,7 @@
       ><img src={svelteLogo} class="logo svelte" alt="Svelte Logo" /></a
     >
   </div>
-  <h1 class="capt">123 Слово ъйюяь! ! ! + Слово 2 ! ! !</h1>
+  <h1 class="title">123 Слово ъйюяь! ! ! + Слово 2 ! ! !</h1>
   <div class="totop-box">
     <Fa icon={faArrowCircleUp} color="#6565ed" size="2.5x" />
   </div>
@@ -41,19 +41,20 @@
   <p class="read-the-docs">Click on the Vite and Svelte logos to learn more</p>
 </main>
 
-<style>
+<style lang="scss">
   :global(body) {
     font-family: Montserrat, sans-serif;
-    /* font-synthesis: none;
+    font-synthesis: none;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    -webkit-text-size-adjust: 100%; */
-  }
-  .capt {
-    text-align: center;
-    /* font-family: Montserrat, sans-serif; */
-    /* font-weight: 400; */
+    -webkit-text-size-adjust: 100%;
+
+    margin: 0;
+    display: flex;
+    place-items: center;
+    min-width: 320px;
+    min-height: 100vh;
   }
 
   .logo {
@@ -71,8 +72,7 @@
   }
 
   .read-the-docs {
-    color: #888;
-    /* font-family: Montserrat; */
+    color: $text-color;
     font-weight: 700;
   }
 </style>
