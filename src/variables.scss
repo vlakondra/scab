@@ -1,4 +1,8 @@
 /* Variables and mixins declared here will be available in all other SCSS files */ /* https://github.com/jgthms/bulma/issues/1293 */
+// @import 'node_modules/bulma/sass/utilities/_all.sass';
+// @import 'node_modules/bulma/sass/base/_all.sass';
+
 $body-overflow-y: auto;
-$text-color:yellow;
+// $text-color: $warning;
+// $test-color: darken($hr-background-color,90);
 $background:rgb(123, 88, 88);
