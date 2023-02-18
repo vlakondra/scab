@@ -1,11 +1,11 @@
 <script>
   import svelteLogo from "./assets/svelte.svg";
-  import Counter from "./lib/Counter.svelte";
+  // import Counter from "./lib/Counter.svelte";
 
   //https://github.com/js-cookie/js-cookie
   import Cookies from "js-cookie";
-  import Fa from "svelte-fa";
-  import { faArrowCircleUp } from "@fortawesome/free-solid-svg-icons";
+  // import Fa from "svelte-fa";
+  // import { faArrowCircleUp } from "@fortawesome/free-solid-svg-icons";
 
   //https://github.com/svelte-add/bulma
   // alert(window.ttt);
@@ -22,14 +22,8 @@
 </script>
 
 <main>
-  <h1 class="title">123 Слово ъйюяь! ! ! + Слово 2 ! ! !</h1>
-  <div>
-    <Fa icon={faArrowCircleUp} color="#6565ed" size="2.5x" />
-  </div>
-
+  <img src={svelteLogo} class="logo svelte" alt="Svelte Logo" />
   <Login />
-
-  <p class="read-the-docs">Click on the Vite and Svelte logos to learn more</p>
 </main>
 
 <style lang="scss">
@@ -47,10 +41,5 @@
     min-width: 320px;
     min-height: 100vh;
     border: 3px solid blue;
-  }
-
-  .read-the-docs {
-    // color: $test-color;
-    font-weight: 700;
   }
 </style>

@@ -20,6 +20,7 @@
     let login_err;
     let rjson;
     $: if (login_err) {
+        //delta --password
         console.log("reserr", login_err);
         //сделать здесь cookie???
         // if (rjson) console.log("res", rjson);
@@ -105,7 +106,7 @@
                 <span class="icon is-small  is-left">
                     <Fa icon={faEnvelope} />
                 </span>
-                <span class="icon is-small is-right">
+                <span class="icon is-small is-right test-color">
                     <Fa icon={faExclamationTriangle} />
                 </span>
             </div>
@@ -170,6 +171,11 @@
     :global(.help.is-danger) {
         color: blue;
     }
+
+    .test-color {
+        color: #d9534f;
+    }
+
     label.label {
         text-align: left;
         font-weight: 400;
