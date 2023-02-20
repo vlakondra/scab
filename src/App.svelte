@@ -1,6 +1,9 @@
 <script>
-  import svelteLogo from "./assets/svelte.svg";
-  // import Counter from "./lib/Counter.svelte";
+  import Header from "./Comps/header.svelte";
+  import Startmessage from "./Comps/startMessage.svelte";
+
+  // import svelteLogo from "./assets/svelte.svg";
+  // import Counter from "./lib/Counter.svelte";дщ
 
   //https://github.com/js-cookie/js-cookie
   import Cookies from "js-cookie";
@@ -11,19 +14,48 @@
   // alert(window.ttt);
 
   import Login from "./Comps/login.svelte";
+  import StartMessage from "./Comps/startMessage.svelte";
 
-  console.log(Cookies.get());
+  const cookieName = "api_token";
+  let startCookie = Cookies.get(cookieName);
+  let loginIsOpen = false;
+
+  const closeLogin = () => {
+    loginIsOpen = false;
+  };
+  const openLogin = () => {
+    loginIsOpen = true;
+  };
+
+  console.log("api_token", Cookies.get());
   // let b = Cookies.get("SL_G_WPT_TO"); //   "SL_G_WPT_TO");
   // console.log("api ", b);
 
   // Cookies.set("mycookie", "??!!", { expires: 7, path: "" });
   // let c = Cookies.get("mycookie");
   // console.log("c", c);
+
+  let openDrawer = false;
+  const TurnDrawer = () => {
+    openDrawer = !openDrawer;
+  };
 </script>
 
+<svelte:head>
+  <title>Личный кабинет</title>
+</svelte:head>
 <main>
-  <img src={svelteLogo} class="logo svelte" alt="Svelte Logo" />
-  <Login />
+  <div>
+    <Header {openLogin} on:keydown={null} onBurgerClick={TurnDrawer} />
+  </div>
+
+  {#if !startCookie && !loginIsOpen}
+    <StartMessage {openLogin} />
+  {:else if loginIsOpen}
+    <Login {closeLogin} />
+  {/if}
+
+  <div />
 </main>
 
 <style lang="scss">
@@ -35,11 +67,18 @@
     -moz-osx-font-smoothing: grayscale;
     -webkit-text-size-adjust: 100%;
 
-    margin: 0;
-    display: flex;
-    place-items: center;
-    min-width: 320px;
+    // margin: 0;
+    // display: flex;
+    // justify-content: center;
+    // place-items: center;
+    // min-width: 320px;
     min-height: 100vh;
     border: 3px solid blue;
+  }
+
+  main {
+    min-width: 320px;
+    max-width: 960px;
+    margin: 0 auto;
   }
 </style>

@@ -1,0 +1,57 @@
+<!-- 
+    // Перепроверить на мобильнике
+    // @media (min-width: 500px) {
+    //      500 и больше
+    //     .kv-burger {
+    //         font-size: 2em;
+    //     }
+    //     .caption-full {
+    //         display: block;
+    //     }
+    //     .caption-small {
+    //         display: none;
+    //     }
+    //     .signin-icon {
+    //         display: none;
+    //     }
+    //     .signin-text {
+    //         display: block;
+    //     }
+
+    //     .caption {
+    //         font-size: 1.75em;
+    //     }
+    // }
+
+    // @media (max-width: 500px) {
+    //     // 500 и меньше
+    //     .logoursei {
+    //         display: none;
+    //     }
+    //     .caption-small {
+    //         font-size: 1.25em;
+    //         letter-spacing: 0px;
+    //     }
+    //     .header {
+    //         padding: 5px 2px;
+    //         margin: 2px 0 0px 0;
+    //         justify-content: space-between;
+    //     }
+
+    //     .kv-burger {
+    //         font-size: 1.75em;
+    //     }
+
+    //     .caption-full {
+    //         display: none;
+    //     }
+    //     .caption-small {
+    //         display: block;
+    //     }
+    //     .signin-icon {
+    //         display: block;
+    //     }
+    //     .signin-text {
+    //         display: none;
+    //     }
+    // } -->

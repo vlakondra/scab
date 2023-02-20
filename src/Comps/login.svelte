@@ -14,6 +14,9 @@
         minLength,
     } from "svelte-use-form";
 
+    import Cookies from "js-cookie";
+
+    export let closeLogin;
     const form = useForm();
 
     let result;
@@ -54,6 +57,7 @@
             body: data,
         });
         console.log("resp", response.status);
+        console.log("api_token??", Cookies.get());
         // One additional option is to use:
         // ... = await response.json();
         // But since we're printing out the response in an HTML element,
@@ -74,7 +78,9 @@
          * in a `<script>` tag, or in an imported `.js` module.
          */
         try {
+            console.log("api_token submit", Cookies.get());
             result = authenticate();
+            console.log("api_token", Cookies.get());
         } catch (error) {
             console.log("EE", error.message);
         }
@@ -91,7 +97,10 @@
     }
 </script>
 
-<div>
+<div class="login-wrapper block">
+    <p on:click={closeLogin()} on:keydown={null} class="close-login delete">
+        &times;
+    </p>
     <form on:submit|preventDefault={submitHandler} class="login-form" use:form>
         <div class="field">
             <label for="email" class="label">Email:</label>
@@ -188,8 +197,8 @@
         padding: 20px;
         border: 1px solid yellow;
         // tmp
-        /* background-color: $background; */
-        width: 500px;
+        // background-color: $background;
+        max-width: 450px;
         margin: 0 auto;
     }
     .hint-container {
@@ -199,5 +208,15 @@
         align-self: flex-end;
         width: 25%;
         // margin-top: 1rem;
+    }
+    .login-wrapper {
+        position: relative;
+        max-width: 450px;
+        margin: 0 auto;
+    }
+    .close-login {
+        position: absolute;
+        right: 0;
+        top: 0;
     }
 </style>
