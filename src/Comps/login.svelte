@@ -1,4 +1,5 @@
 <script>
+    import Auth, { login_result } from "../lib/store";
     import Fa from "svelte-fa";
     import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
     import { faLock } from "@fortawesome/free-solid-svg-icons";
@@ -16,89 +17,37 @@
 
     import Cookies from "js-cookie";
 
-    export let closeLogin;
+    export let toggleLogin;
     const form = useForm();
+    login_result.set(null);
 
-    let result;
-    let login_err;
-    let rjson;
-    $: if (login_err) {
-        //delta --password
-        console.log("reserr", login_err);
-        //сделать здесь cookie???
-        // if (rjson) console.log("res", rjson);
-    }
-    async function authenticate() {
-        // Gathered from: https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
-        let url = "https://api-1.ursei.su/access_token";
-        const data = new URLSearchParams();
-
-        const clientId = "studentlk";
-        const clientSecret = "studentlk";
-        const scopes = "basic studentlk";
-
-        data.append("grant_type", "password");
-        data.append("client_id", clientId);
-        data.append("client_secret", clientSecret);
-        data.append("scope", scopes);
-        data.append("username", $form.email.value);
-        data.append("password", $form.password.value);
-
-        let response = await fetch(url, {
-            method: "post",
-            mode: "cors", // no-cors, *cors, same-origin,
-            cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-            //credentials: "same-origin",
-            headers: {
-                Accept: "1.0",
-                "Content-Type": "application/x-www-form-urlencoded",
-                //'Content-Type': 'application/json'
-            },
-            body: data,
-        });
-        console.log("resp", response.status);
-        console.log("api_token??", Cookies.get());
-        // One additional option is to use:
-        // ... = await response.json();
-        // But since we're printing out the response in an HTML element,
-        // it is convenient to await the `.text()` promise.
-        //??rjson = await response.json(); //text();
-
-        // This next line is verbose, but it's meant to demonstrate
-        // what happens when we want to use a reactive value change
-        // to bind our new information using `$: if(data) {...}`
-        //let resp = text;
-        return response.json();
+    $: if ($login_result) {
     }
 
     function submitHandler() {
-        //https://sveltesociety.dev/recipes/design-patterns/authentication-with-svelte
-        /* This promise needs to be awaited somewhere --
-         * either in the HTML body via `{#await}` tags,
-         * in a `<script>` tag, or in an imported `.js` module.
-         */
         try {
-            console.log("api_token submit", Cookies.get());
-            result = authenticate();
-            console.log("api_token", Cookies.get());
+            const data = new URLSearchParams();
+            const clientId = "studentlk";
+            const clientSecret = "studentlk";
+            const scopes = "basic studentlk";
+
+            data.append("grant_type", "password");
+            data.append("client_id", clientId);
+            data.append("client_secret", clientSecret);
+            data.append("scope", scopes);
+            data.append("username", $form.email.value);
+            data.append("password", $form.password.value);
+
+            login_result.set(null);
+            Auth(data);
         } catch (error) {
             console.log("EE", error.message);
         }
-
-        // authenticate()
-        //     .then((data) => {
-        //         result = data;
-        //         console.log("data", data);
-        //     })
-        //     .catch((error) => {
-        //         login_err = error.message;
-        //         console.log("err", error);
-        //     });
     }
 </script>
 
 <div class="login-wrapper block">
-    <p on:click={closeLogin()} on:keydown={null} class="close-login delete">
+    <p on:click={toggleLogin()} on:keydown={null} class="close-login delete">
         &times;
     </p>
     <form on:submit|preventDefault={submitHandler} class="login-form" use:form>
@@ -111,6 +60,7 @@
                     name="email"
                     use:validators={[required, email]}
                     placeholder="Email"
+                    autocomplete="email"
                 />
                 <span class="icon is-small  is-left">
                     <Fa icon={faEnvelope} />
@@ -140,6 +90,7 @@
                     name="password"
                     use:validators={[required]}
                     placeholder="Пароль"
+                    autocomplete="current-password"
                 />
                 <span class="icon is-small  is-left">
                     <Fa icon={faLock} />
@@ -154,22 +105,17 @@
                 </Hint>
             </div>
         </div>
-
-        <button class="button is-info" disabled={!$form.valid}>Вход</button>
+        <div class="login-footer">
+            <div class="login-message">
+                {#if $login_result}
+                    Вход выполнен
+                {:else if $login_result == false}
+                    Вход не выполнен
+                {/if}
+            </div>
+            <button class="button is-info" disabled={!$form.valid}>Вход</button>
+        </div>
     </form>
-</div>
-<div>
-    {#if result === undefined}
-        <p>???</p>
-    {:else}
-        {#await result}
-            <div><span>Logging in...</span></div>
-        {:then value}
-            <div><span>{value["access_token"]}</span></div>
-        {:catch error}
-            <div>!!!<span>{error}</span></div>
-        {/await}
-    {/if}
 </div>
 
 <style lang="scss">
@@ -204,10 +150,17 @@
     .hint-container {
         height: 20px;
     }
-    .login-form button {
-        align-self: flex-end;
-        width: 25%;
-        // margin-top: 1rem;
+
+    .login-message {
+        padding-right: 10px;
+        font-size: 0.85em;
+        font-weight: 600;
+        color: red;
+    }
+    .login-footer {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
     }
     .login-wrapper {
         position: relative;

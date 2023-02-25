@@ -1,20 +1,18 @@
 <script>
     // import { onMount } from "svelte";
+    import { login_result, loginIsOpen } from "../lib/store";
 
     export let onBurgerClick;
-    export let openLogin;
+    export let toggleLogin;
 
     import Fa from "svelte-fa";
 
     import { faBars } from "@fortawesome/free-solid-svg-icons";
     import { faArrowRightToBracket } from "@fortawesome/free-solid-svg-icons";
-    import ursei from "../assets/logo-ursei.png";
+    import { faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 </script>
 
 <div id="header" class="header">
-    <!-- <div class="logoursei">
-        <img src={ursei} class="logo" alt="UrSEI Logo" />
-    </div> -->
     <div class="caption-wrapp">
         <div class="kv-burger" on:keydown={null} on:click={onBurgerClick}>
             <Fa icon={faBars} />
@@ -23,17 +21,40 @@
         <div class="caption-small">Личный кабинет</div>
     </div>
     <div>
-        <div
-            on:click={openLogin()}
-            on:keydown={null}
-            class="signin-icon"
-            title="Вход"
-        >
-            <Fa icon={faArrowRightToBracket} />
-        </div>
-        <div on:click={openLogin()} on:keydown={null} class="signin-text">
-            Вход
-        </div>
+        {#if !$loginIsOpen}
+            <div
+                on:click={toggleLogin()}
+                on:keydown={null}
+                class="signin-icon"
+                title="Вход"
+            >
+                {#if !$login_result}
+                    <Fa icon={faArrowRightToBracket} />
+                {:else}
+                    <Fa icon={faArrowRightFromBracket} />
+                {/if}
+            </div>
+        {/if}
+        <!-- {#if $login_result == null || $login_result == false} -->
+        {#if !$loginIsOpen}
+            {#if !$login_result}
+                <div
+                    on:click={toggleLogin()}
+                    on:keydown={null}
+                    class="signin-text"
+                >
+                    Вход
+                </div>
+            {:else}
+                <div
+                    on:click={toggleLogin()}
+                    on:keydown={null}
+                    class="signin-text"
+                >
+                    Выход
+                </div>
+            {/if}
+        {/if}
     </div>
 </div>
 

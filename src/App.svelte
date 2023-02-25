@@ -1,5 +1,8 @@
 <script>
   import Header from "./Comps/header.svelte";
+  import Drawer from "svelte-drawer-component";
+  import { login_result, loginIsOpen } from "./lib/store";
+
   import Startmessage from "./Comps/startMessage.svelte";
 
   // import svelteLogo from "./assets/svelte.svg";
@@ -18,16 +21,20 @@
 
   const cookieName = "api_token";
   let startCookie = Cookies.get(cookieName);
-  let loginIsOpen = false;
+  // let loginIsOpen = false;
 
-  const closeLogin = () => {
-    loginIsOpen = false;
-  };
-  const openLogin = () => {
-    loginIsOpen = true;
+  const toggleLoginForm = () => {
+    loginIsOpen.set(!$loginIsOpen);
   };
 
-  console.log("api_token", Cookies.get());
+  // const closeLogin = () => {
+  //   loginIsOpen = false;
+  // };
+  // const openLogin = () => {
+  //   loginIsOpen = true;
+  // };
+
+  console.log("Cookies.get-App-Startmessage", Cookies.get());
   // let b = Cookies.get("SL_G_WPT_TO"); //   "SL_G_WPT_TO");
   // console.log("api ", b);
 
@@ -37,8 +44,13 @@
 
   let openDrawer = false;
   const TurnDrawer = () => {
-    openDrawer = !openDrawer;
+    if ($login_result) openDrawer = !openDrawer;
+    else loginIsOpen.set(true);
   };
+
+  $: if ($login_result) {
+    openDrawer = true;
+  }
 </script>
 
 <svelte:head>
@@ -46,14 +58,31 @@
 </svelte:head>
 <main>
   <div>
-    <Header {openLogin} on:keydown={null} onBurgerClick={TurnDrawer} />
+    <Header
+      toggleLogin={toggleLoginForm}
+      on:keydown={null}
+      onBurgerClick={TurnDrawer}
+    />
   </div>
 
-  {#if !startCookie && !loginIsOpen}
-    <StartMessage {openLogin} />
-  {:else if loginIsOpen}
-    <Login {closeLogin} />
+  <Drawer
+    open={openDrawer}
+    on:clickAway={() => (openDrawer = false)}
+    size="null"
+  >
+    <button on:click={() => (openDrawer = false)}>Close</button>
+  </Drawer>
+
+  {#if !startCookie && !$loginIsOpen}
+    <StartMessage toggleLogin={toggleLoginForm} />
   {/if}
+  {#if $loginIsOpen}
+    <Login toggleLogin={toggleLoginForm} />
+  {/if}
+
+  <!-- {:else if loginIsOpen}
+    <Login toggleLogin={toggleLoginForm} />
+  {/if} -->
 
   <div />
 </main>
@@ -80,5 +109,29 @@
     min-width: 320px;
     max-width: 960px;
     margin: 0 auto;
+  }
+
+  main :global(.drawer .panel) {
+    transition: transform 1s ease;
+    color: rgb(141, 128, 203);
+  }
+  main :global(.drawer .panel .notification) {
+    background-color: #fff;
+    height: 100%;
+    font-size: 0.9em;
+  }
+  @media (min-width: 500px) {
+    main :global(.drawer .panel) {
+      max-width: 350px !important;
+    }
+  }
+  @media (max-width: 500px) {
+    :global(.drawer .panel) {
+      max-width: 80% !important;
+    }
+  }
+  :global(.active-group) {
+    background-color: #9cc87d;
+    color: white;
   }
 </style>
