@@ -1,46 +1,41 @@
 <script>
   import Header from "./Comps/header.svelte";
   import Drawer from "svelte-drawer-component";
-  import { login_result, loginIsOpen } from "./lib/store";
+  import {
+    login_result,
+    loginIsOpen,
+    accessToken,
+    getRefreshToken,
+  } from "./lib/store";
 
   import Startmessage from "./Comps/startMessage.svelte";
 
-  // import svelteLogo from "./assets/svelte.svg";
-  // import Counter from "./lib/Counter.svelte";дщ
-
-  //https://github.com/js-cookie/js-cookie
   import Cookies from "js-cookie";
-  // import Fa from "svelte-fa";
-  // import { faArrowCircleUp } from "@fortawesome/free-solid-svg-icons";
-
-  //https://github.com/svelte-add/bulma
-  // alert(window.ttt);
 
   import Login from "./Comps/login.svelte";
   import StartMessage from "./Comps/startMessage.svelte";
 
   const cookieName = "api_token";
   let startCookie = Cookies.get(cookieName);
-  // let loginIsOpen = false;
+
+  if (startCookie) {
+    let expires = new Date(JSON.parse(startCookie)["expires_in"]);
+    console.log("exp??", expires);
+    let d = new Date(2023, 5, 1);
+    if (d < expires) {
+      let access_token = JSON.parse(startCookie)["access_token"];
+      accessToken.set(access_token); //??
+    } else {
+      debugger;
+      getRefreshToken(JSON.parse(startCookie)["refresh_token"]);
+    }
+  }
+
+  console.log("Cookies.get-App-Startmessage", startCookie);
 
   const toggleLoginForm = () => {
     loginIsOpen.set(!$loginIsOpen);
   };
-
-  // const closeLogin = () => {
-  //   loginIsOpen = false;
-  // };
-  // const openLogin = () => {
-  //   loginIsOpen = true;
-  // };
-
-  console.log("Cookies.get-App-Startmessage", Cookies.get());
-  // let b = Cookies.get("SL_G_WPT_TO"); //   "SL_G_WPT_TO");
-  // console.log("api ", b);
-
-  // Cookies.set("mycookie", "??!!", { expires: 7, path: "" });
-  // let c = Cookies.get("mycookie");
-  // console.log("c", c);
 
   let openDrawer = false;
   const TurnDrawer = () => {
@@ -76,6 +71,8 @@
   {#if !startCookie && !$loginIsOpen}
     <StartMessage toggleLogin={toggleLoginForm} />
   {/if}
+  {$accessToken}
+
   {#if $loginIsOpen}
     <Login toggleLogin={toggleLoginForm} />
   {/if}
