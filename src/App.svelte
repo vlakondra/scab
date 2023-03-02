@@ -20,15 +20,15 @@
 
   if (startCookie) {
     let expires = new Date(JSON.parse(startCookie)["expires_in"]);
-    console.log("exp??", expires);
-    let d = new Date(2023, 5, 1);
-    if (d < expires) {
-      let access_token = JSON.parse(startCookie)["access_token"];
-      accessToken.set(access_token); //??
-    } else {
-      debugger;
-      getRefreshToken(JSON.parse(startCookie)["refresh_token"]);
-    }
+    // console.log("exp??", expires);
+    // let d = new Date(2023, 5, 1);
+    // if (d < expires) {
+    let access_token = JSON.parse(startCookie)["access_token"];
+    accessToken.set(access_token); //??
+    // } else {
+    //   debugger;
+    //   getRefreshToken(JSON.parse(startCookie)["refresh_token"]);
+    // }
   }
 
   console.log("Cookies.get-App-Startmessage", startCookie);
@@ -71,7 +71,7 @@
   {#if !startCookie && !$loginIsOpen}
     <StartMessage toggleLogin={toggleLoginForm} />
   {/if}
-  {$accessToken}
+  <!-- {$accessToken} -->
 
   {#if $loginIsOpen}
     <Login toggleLogin={toggleLoginForm} />
